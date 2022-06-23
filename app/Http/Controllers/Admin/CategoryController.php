@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -15,17 +17,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $categories = Category::orderByDesc('id')->get();
+        return view('admin.categories.index', compact('categories'));
     }
 
     /**
@@ -36,29 +29,23 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        //dd($request->all());
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Category $category)
-    {
-        //
-    }
+        //validation
+        $val_data = $request->validate([
+            'name' => 'required|unique:categories'
+        ]);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Category $category)
-    {
-        //
+        //generate slug
+        $slug = Str::slug($request->name);
+        $val_data['slug'] = $slug;
+
+        //save
+        Category::create($val_data);
+
+        //redirect
+        return redirect()->back()->with('message', 'Category successfully added!!');
+        
     }
 
     /**
@@ -70,7 +57,24 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        //dd($request->all());
+
+        //validation
+
+        // aggiungere la classe Rule per far si che il titolo ignori lo unique
+        $val_data = $request->validate([
+            'name' => ['required', Rule::unique('categories',)->ignore('$category')]
+        ]);
+
+        //generate slug
+        $slug = Str::slug($request->name);
+        $val_data['slug'] = $slug;
+
+        //save
+        $category->update($val_data);
+
+        //redirect
+        return redirect()->back()->with('message', 'Category $slug updated successfully!!');
     }
 
     /**
@@ -81,6 +85,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+        return redirect()->back()->with('message', 'Category deleted!!');
     }
 }

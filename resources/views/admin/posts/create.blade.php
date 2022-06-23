@@ -11,7 +11,6 @@
         <input type="text" name="title" id="title" class="form-control" placeholder="Learn php article" aria-describedby="titleHelper" value="{{old('title')}}">
         <small id="titleHelper" class="text-muted">Type the post title, max: 150 carachters</small>
     </div>
-    <!-- TODO: Change to input type file -->
     <div class="form-group">
         <label for="cover_image">cover_image</label>
         <input type="text" name="cover_image" id="cover_image" class="form-control" placeholder="Learn php article" aria-describedby="cover_imageHelper" value="{{old('cover_image')}}">
@@ -23,7 +22,7 @@
         <select class="form-control @error('category_id') is-invalid @enderror" name="category_id" id="category_id">
             <option value="">Select category</option>
             @foreach($categories as $category)
-            <option value="{{$category->id}}">{{$category->name}}</option>
+            <option value="{{$category->id}}" {{old('category_id') == $category->id ? 'selected' : ''}}>{{$category->name}}</option>
             @endforeach
 
         </select>

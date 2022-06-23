@@ -10232,3 +10232,10 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+#sidebarMenu {
+  box-shadow: 0 0 10px grey;
+}
+
+a:hover {
+  color: black !important;
+}

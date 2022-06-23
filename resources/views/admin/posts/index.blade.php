@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container">
+    @include('partials.session_mess')
 
     <table class="table table-striped table-inverse table-responsive">
         <thead class="thead-inverse">
