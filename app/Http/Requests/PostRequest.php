@@ -28,6 +28,7 @@ class PostRequest extends FormRequest
             'title' => [
                 'required', Rule::unique('posts')->ignore($this->post), 'max:150'
             ],
+            'category_id' => ['nullable', 'exists:categories,id'],
             'cover_image' => ['nullable'],
             'content' => ['nullable']
         ];
