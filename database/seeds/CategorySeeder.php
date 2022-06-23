@@ -22,5 +22,4 @@ class CategorySeeder extends Seeder
             $new_category->save();
         }
     }
-
 }
